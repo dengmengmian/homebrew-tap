@@ -5,7 +5,8 @@ cask "agentgate" do
   sha256 arm:   "eabc2b565e10ee40c8d73ce1a79c291a1dd6dbe2f2dc18fb52edffc13f58e00b",
          intel: "2fe8e0fee3f7b502764dab2ed189662551c088c18b5b09a889cc948b2fe0169c"
 
-  url "https://github.com/dengmengmian/agentgate-ai/releases/download/v#{version}/AgentGate_#{version}_#{arch}.dmg"
+  url "https://github.com/dengmengmian/agentgate-ai/releases/download/v#{version}/AgentGate_#{version}_#{arch}.dmg",
+      verified: "github.com/dengmengmian/agentgate-ai/"
   name "AgentGate"
   desc "Local AI gateway that routes, converts, fails over, and traces model requests"
   homepage "https://dengmengmian.github.io/agentgate-ai/"
