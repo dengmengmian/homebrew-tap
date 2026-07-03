@@ -22,3 +22,11 @@ brew upgrade --cask agentgate
 ```
 
 AgentGate also ships a built-in updater, so the app can update itself between cask bumps.
+
+## Formulae
+
+[ReviewGate](https://github.com/dengmengmian/ReviewGate) — pre-merge quality gate for AI-generated code:
+
+```bash
+brew install dengmengmian/tap/reviewgate
+```
