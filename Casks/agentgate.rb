@@ -17,6 +17,7 @@ cask "agentgate" do
 
   # 应用内置 tauri-plugin-updater 自更新
   auto_updates true
+  depends_on :macos
 
   app "AgentGate.app"
 
