@@ -4,6 +4,11 @@ class Reviewgate < Formula
   version "0.5.0"
   license "MIT"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/dengmengmian/ReviewGate/releases/download/v#{version}/reviewgate-darwin-arm64"
@@ -22,11 +27,6 @@ class Reviewgate < Formula
       url "https://github.com/dengmengmian/ReviewGate/releases/download/v#{version}/reviewgate-linux-x64"
       sha256 "f99e71af3455cb9857ee505c8068204142b9bf66eaf19e83fd3215e095275e13"
     end
-  end
-
-  livecheck do
-    url :stable
-    strategy :github_latest
   end
 
   def install
