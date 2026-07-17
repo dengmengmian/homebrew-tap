@@ -1,9 +1,9 @@
 cask "agentgate" do
   arch arm: "aarch64", intel: "x64"
 
-  version "1.5.0"
-  sha256 arm:   "f7f7b2727d48005ff8adc0e5ce12eb9404dfa24e8c3f79fe5c87b7cc44c8cdf1",
-         intel: "3092bf5c97b29e5ab0a65e2def40b3a61fef25ac8fc70e2389a66c62ef270262"
+  version "1.5.1"
+  sha256 arm:   "1ace38c6ec16152e47ee01f69a44bf3124506d6e4eb667f25b20411e4bbf9bea",
+         intel: "e112f08a138bce0bce2f7ece16fc3a82e84d1bf9fc7199cd5b6cd99891d7f7ec"
 
   url "https://github.com/dengmengmian/agentgate-ai/releases/download/v#{version}/AgentGate_#{version}_#{arch}.dmg",
       verified: "github.com/dengmengmian/agentgate-ai/"
