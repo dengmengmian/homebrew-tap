@@ -1,7 +1,7 @@
 class Reviewgate < Formula
   desc "Pre-merge quality gate for AI-generated code"
   homepage "https://dengmengmian.github.io/ReviewGate/"
-  version "0.9.0"
+  version "0.11.0"
   license "MIT"
 
   livecheck do
@@ -12,20 +12,20 @@ class Reviewgate < Formula
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/dengmengmian/ReviewGate/releases/download/v#{version}/reviewgate-darwin-arm64"
-      sha256 "40780f392444190bcf70e8ce9a39f861f15964ed8ff0c0d72b5e4e7d665fcc28"
+      sha256 "4b47decc4e9d43c29a75b3aa8ee0ea54d67e225e8121319198942831758537a7"
     else
       url "https://github.com/dengmengmian/ReviewGate/releases/download/v#{version}/reviewgate-darwin-x64"
-      sha256 "178fc29aba0531b9dfeac469abff636bd0326bd83e86e02d2de46acf43ab4913"
+      sha256 "d49c73c4d1799f1501bd92e972cffede6557f1a2a2f827ec0c10015fec703a92"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
       url "https://github.com/dengmengmian/ReviewGate/releases/download/v#{version}/reviewgate-linux-arm64"
-      sha256 "d779e0d4466c797e042d43e42768cc1ff1e07d93992b2428c8e62e12debff637"
+      sha256 "f0fc9f6463b6d3eefc817d153846a187a55e4219d3bba23ffeac2cc51f04942e"
     else
       url "https://github.com/dengmengmian/ReviewGate/releases/download/v#{version}/reviewgate-linux-x64"
-      sha256 "aa56666f2a30a035329d02df4a4928f946e39a147ba23afbab1cdf9dc2936d05"
+      sha256 "4268becadc8cc25baf6872f2da7d13e5930069452f671b42ee264f5e07ea2587"
     end
   end
 
