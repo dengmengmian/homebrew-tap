@@ -30,3 +30,9 @@ AgentGate also ships a built-in updater, so the app can update itself between ca
 ```bash
 brew install dengmengmian/tap/reviewgate
 ```
+
+[CodeLeveler](https://github.com/dengmengmian/CodeLeveler) — local-first coding agent CLI (`leveler`):
+
+```bash
+brew install dengmengmian/tap/leveler
+```
