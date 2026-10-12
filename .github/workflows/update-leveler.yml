@@ -1,0 +1,67 @@
+name: Update CodeLeveler formula
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/**'
+      - 'Formula/leveler.rb'
+      - '.github/workflows/update-leveler.yml'
+  pull_request:
+    paths:
+      - 'scripts/**'
+      - 'Formula/leveler.rb'
+      - '.github/workflows/update-leveler.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update-leveler-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: python3 -m unittest discover -s scripts -p 'test_update_leveler.py'
+
+  update:
+    needs: test
+    if: >-
+      github.repository == 'dengmengmian/homebrew-tap' &&
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Read the latest published stable release and update the formula
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api repos/dengmengmian/CodeLeveler/releases/latest > "$RUNNER_TEMP/leveler-release.json"
+          python3 scripts/update_leveler.py < "$RUNNER_TEMP/leveler-release.json"
+      - name: Commit the formula if it changed
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- Formula/leveler.rb; then
+            echo "No new stable release to sync"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add Formula/leveler.rb
+          git commit -m 'chore: update CodeLeveler Homebrew formula'
+          git push origin HEAD:main

@@ -36,3 +36,21 @@ brew install dengmengmian/tap/reviewgate
 ```bash
 brew install dengmengmian/tap/leveler
 ```
+
+Upgrade with `brew update && brew upgrade leveler`.
+
+The `Update CodeLeveler formula` workflow checks the latest published stable
+CodeLeveler release every hour (GitHub may delay scheduled runs). It updates
+the version and all three platform SHA256 values from GitHub's release asset
+digests, and commits only when the formula changes. It can also be run manually
+on `main` with `workflow_dispatch`. No cross-repository token is required;
+the workflow uses this tap's `GITHUB_TOKEN` with `contents: write`.
+Repository rules must permit that token to push the formula update to `main`.
+
+To update locally using the same release metadata:
+
+```bash
+gh api repos/dengmengmian/CodeLeveler/releases/latest > /tmp/leveler-release.json
+python3 scripts/update_leveler.py < /tmp/leveler-release.json
+python3 -m unittest discover -s scripts -p 'test_update_leveler.py'
+```
