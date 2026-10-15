@@ -20,6 +20,12 @@ class Leveler < Formula
   end
 
   on_linux do
+    on_arm do
+      # No linux-aarch64 artifact is published yet. Homebrew requires every
+      # platform branch to carry a URL, so say this plainly instead of leaving
+      # the formula urlless there and failing validation on the whole tap.
+      odie "leveler has no linux-aarch64 build yet"
+    end
     on_intel do
       url "https://github.com/dengmengmian/CodeLeveler/releases/download/v#{version}/leveler-v#{version}-x86_64-unknown-linux-gnu.tar.gz"
       sha256 "7ec84a7bc847752d14e6b8aa2c0f8168c86fc7c8161dcfe8a519a4b2c317b063"
