@@ -2,9 +2,9 @@
 cask "agentgate" do
   arch arm: "aarch64", intel: "x64"
 
-  version "2.0.9"
-  sha256 arm:   "c2aa8321cd992d13f1af7ac82e5ea6fff9b02fd29fd1787e308d2e3625abd71c",
-         intel: "ac266125abedce3bc14f280c6413b4a6d37f7c0f681a3c65977a03140020cbb2"
+  version "2.0.10"
+  sha256 arm:   "d6251a934c76a21b49fd620cb800f4fa7cfa5a22b0406429bd4d37e212d77365",
+         intel: "610c79de224ba60f8090124231621e9243831388578f265675f8c63bd42737e0"
 
   url "https://github.com/dengmengmian/muxlayer/releases/download/v#{version}/MuxLayer_#{version}_#{arch}.dmg",
       verified: "github.com/dengmengmian/muxlayer/"
