@@ -8,6 +8,23 @@ import sys
 
 TARGETS = ("aarch64-apple-darwin", "x86_64-apple-darwin", "x86_64-unknown-linux-gnu")
 VERSION = r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)"
+DOWNLOAD = "https://github.com/dengmengmian/CodeLeveler/releases/download"
+
+
+def formula_version(formula):
+    """The version the formula pins today, from the one URL it downloads from.
+
+    Homebrew scans the version from an asset URL, so the formula states it
+    there and nowhere else; a second `version` stanza is rejected by
+    `brew audit --strict` as redundant.
+    """
+    found = {
+        ".".join(parts)
+        for parts in re.findall(r"releases/download/v" + VERSION + r"/", formula)
+    }
+    if len(found) != 1:
+        raise ValueError("Expected exactly one formula version")
+    return found.pop()
 
 
 def update_formula(formula, release):
@@ -18,13 +35,13 @@ def update_formula(formula, release):
     if not match:
         raise ValueError("Invalid stable release tag")
     version = tag[1:]
-    current = re.findall(r'^  version "(' + VERSION + r')"$', formula, re.MULTILINE)
-    if len(current) != 1:
-        raise ValueError("Expected exactly one formula version")
-    if tuple(map(int, version.split("."))) < tuple(map(int, current[0][0].split("."))):
+    current = formula_version(formula)
+    if tuple(map(int, version.split("."))) < tuple(map(int, current.split("."))):
         raise ValueError("Refusing to downgrade the formula")
 
-    updated = re.sub(r'^  version "' + VERSION + r'"$', lambda _: f'  version "{version}"', formula, flags=re.MULTILINE)
+    updated = formula.replace(
+        f"{DOWNLOAD}/v{current}/", f"{DOWNLOAD}/v{version}/"
+    ).replace(f"leveler-v{current}-", f"leveler-v{version}-")
     for target in TARGETS:
         name = f"leveler-{tag}-{target}.tar.gz"
         assets = [asset for asset in release["assets"] if asset["name"] == name]
@@ -33,8 +50,8 @@ def update_formula(formula, release):
         digest = assets[0].get("digest")
         if not isinstance(digest, str) or not re.fullmatch(r"sha256:[0-9a-f]{64}", digest):
             raise ValueError(f"Missing or invalid GitHub SHA256 digest: {name}")
-        url = f'https://github.com/dengmengmian/CodeLeveler/releases/download/v#{{version}}/leveler-v#{{version}}-{target}.tar.gz'
-        pattern = r'(url "' + re.escape(url) + r'"\n\s+sha256 ")[0-9a-f]{64}(\")'
+        url = f'{DOWNLOAD}/v{version}/leveler-v{version}-{target}.tar.gz'
+        pattern = r'(url "' + re.escape(url) + r'"\n\s+sha256 ")[0-9a-f]{64}(")'
         updated, count = re.subn(pattern, lambda m: m[1] + digest[7:] + m[2], updated)
         if count != 1:
             raise ValueError(f"Unrecognized formula layout for {target}")

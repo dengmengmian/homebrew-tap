@@ -21,9 +21,16 @@ class UpdateLevelerTests(unittest.TestCase):
 
     def test_updates_version_and_each_platform_checksum(self):
         updated = update_formula(self.formula, self.release)
-        self.assertIn('version "99.0.0"', updated)
+        # The version lives in the asset URL, which is also where Homebrew
+        # scans it; a separate `version` stanza would be audited as redundant.
+        self.assertNotIn('version "', updated)
+        self.assertIn("releases/download/v99.0.0/", updated)
+        self.assertNotIn("releases/download/v1.0.", updated)
         for index, target in enumerate(TARGETS, 1):
-            self.assertIn(f'{target}.tar.gz"\n      sha256 "' + str(index) * 64 + '"', updated)
+            self.assertIn(
+                f'v99.0.0/leveler-v99.0.0-{target}.tar.gz"\n      sha256 "' + str(index) * 64 + '"',
+                updated,
+            )
         self.assertIn('bin.install "leveler"', updated)
         self.assertEqual(update_formula(updated, self.release), updated)
 
